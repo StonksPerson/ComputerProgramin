@@ -15,9 +15,11 @@ my_b_day_classes = [
 total = 0
 
 def add_numbers(Number1,Number2):
-    return(Number1 + Number2)
+    print(Number1 + Number2)
 
+user_number1 = input("Number 1 ")
+user_number2 = input("Number 2 ")
 
-print(add_numbers(int(input("First Number ")),int(input("Second Number "))))
+add_numbers(user_number1,user_number2)
 
 print(f"Hi, my name is {my_name}. I just scored {test_score} on my last test. My classes today are {my_b_day_classes}.")
