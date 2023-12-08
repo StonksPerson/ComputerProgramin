@@ -4,7 +4,7 @@ inventory = []
 shopBuy = []
 shopBuyNames = []
 inShop = False
-money = 200
+money = 0
 event = 0
 addMoney = 0
 difficulty = 1
@@ -16,11 +16,11 @@ inventory = [
     ]
 shopItems = [
     {"name": "wood sword", "damage": 5, "durablitity": 5, "obj": 1, "price": 5},
-    {"name": "wood sheild", "protection": 5, "durablitity": 20, "obj": 2, "price": 10},
-    {"name": "wood armor", "protection": 5, "durablitity": 50, "obj": 3, "price": 15},
+    {"name": "wood sheild", "protection": 15, "durablitity": 20, "obj": 2, "price": 10},
+    {"name": "wood armor", "protection": 15, "durablitity": 50, "obj": 3, "price": 15},
     {"name": "iron sword", "damage": 10, "durablitity": 10, "obj": 1, "price": 20},
-    {"name": "iron sheild", "protection": 7, "durablitity": 20, "obj": 2, "price": 20},
-    {"name": "iron armor", "protection": 10, "durablitity": 50, "obj": 3, "price": 25},
+    {"name": "iron sheild", "protection": 40, "durablitity": 20, "obj": 2, "price": 70},
+    {"name": "iron armor", "protection": 50, "durablitity": 50, "obj": 3, "price": 75},
     ]
 shopStore = []
 distance = 0
@@ -96,7 +96,7 @@ def enemyBattle():
     words = open("first-names.txt")
     words = words.readlines()
     name = words[math.floor(rand.random() * 4946)]
-    enemy = {'health': math.floor(rand.randint(1, 20) * difficulty), 'damage': math.floor(rand.randint(1, 5) * difficulty), "name": name}
+    enemy = {'health': math.floor(rand.randint(20, 100) * difficulty), 'damage': math.floor(rand.randint(10, 50) * difficulty), "name": name}
     print(f"You encounter an enemy!")
     print()
     inBattle = True
@@ -108,9 +108,9 @@ def enemyBattle():
         print(f"you have {player['health']} hp.")
         print()
         action = input(f"What will you do {name}? (type h for commands): ")
-        enemyDamage = enemy["damage"] + rand.randint(-10, 10)
-        enemyDamage -= inventory[2]["protection"]
-        inventory[2]['durablitity'] -= rand.randint(0,1)
+        enemyDamage = enemy["damage"] * rand.randint(1, 2)
+        enemyDamage -= inventory[1]["protection"]
+        inventory[1]["protection"] -= rand.randint(0,1)
 
         for i in range(20):
             print()
@@ -123,8 +123,7 @@ def enemyBattle():
             print("r: run away (might not work!)")
         elif(action.capitalize() == "A"):
             if inventory[0]['durablitity'] > 0:
-                enemy['health'] -= inventory[0]['damage']
-                inventory[0]['durablitity'] -= rand.randint(0,1)
+                enemy['health'] -= inventory[0]['damage'] * rand.randint(1, 2)
             else:
                 print("Your sword is broken")
         elif(action.capitalize() == "D"):
@@ -135,6 +134,8 @@ def enemyBattle():
             enemy['health'] -= edamage
             print(f'you did {edamage} damage.')
         elif(action.capitalize() == "P"):
+            player['health'] -= enemy['strength']
+            inventory[0]['durablitity'] -= rand.randint(0,1)
             pheal = rand.randint(-10, 10)
             player['health'] += pheal
             print(f'you healed {pheal}.')
@@ -143,19 +144,25 @@ def enemyBattle():
             if(run == 2):
                 print("you ran away")
                 break
+
+        player['health'] -= enemyDamage
+        inventory[0]['durablitity'] -= rand.randint(0,1)
+
         if(enemy["health"] <= 0):
             addMoney = math.floor(rand.randint(1,20) * difficulty)
             print("You slayed the mosnter!")
             print(f"+ ${addMoney}")
             break
 
-
+def heartMerchant():
+    print("You found a heart merchant")
+    print(f"Each heart is {math.floor(70 * difficulty)}")
 
 while(alive == True):
     event = rand.randint(0, 100)
     difficulty += 0.01
     move = ""
-    move = input(f"Press W to walk forward. To go to the shop press S: ")
+    move = input(f"Press W to walk forward. To go to the shop press S , to see your inventory press i: ")
 
     if move.lower() == "w":
         movePlayer()
@@ -165,10 +172,15 @@ while(alive == True):
         elif (event < 90 and event > 80):
             randMoney = rand.randint(0, 20)
             print(f"You found ${randMoney}!")
-        elif (event < 25):
+        elif (event < 25 and event > 1):
             enemyBattle()
+        elif (event == 0):
+            heartMerchant()
     elif move.lower() == "s":
-        money = runEvent(event, money)       
+        money = runEvent(event, money)
+    elif move.lower() == "i":
+        for i in range(len(inventory)):
+            print(inventory[i]['name'])
     elif (move.lower() != ""): 
         print("Invalid input.")
 
