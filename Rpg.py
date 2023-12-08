@@ -28,6 +28,12 @@ move = ""
 import random as rand
 import math
 
+print("Welcome to the coolest adventure ever!!!11!1!")
+print()
+name = input("Welcome adventurer! What is your name? : ")
+print()
+print(f"Hello {name}!")
+
 def movePlayer():
     print()
 
@@ -101,7 +107,7 @@ def enemyBattle():
         print()
         print(f"you have {player['health']} hp.")
         print()
-        action = input("What will you do? (type h for commands): ")
+        action = input(f"What will you do {name}? (type h for commands): ")
         enemyDamage = enemy["damage"] + rand.randint(-10, 10)
         enemyDamage -= inventory[2]["protection"]
         inventory[2]['durablitity'] -= rand.randint(0,1)
