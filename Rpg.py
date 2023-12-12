@@ -31,6 +31,8 @@ import math
 print("Welcome to the coolest adventure ever!!!11!1!")
 print()
 name = input("Welcome adventurer! What is your name? : ")
+if name[0].lower() == "b":
+    print("Stop using names that start with the letter B Mr. Hunt")
 print()
 print(f"Hello {name}!")
 
@@ -183,6 +185,3 @@ while(alive == True):
             print(inventory[i]['name'])
     elif (move.lower() != ""): 
         print("Invalid input.")
-
-
-
