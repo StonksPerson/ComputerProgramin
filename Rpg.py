@@ -174,6 +174,7 @@ while(alive == True):
         elif (event < 90 and event > 80):
             randMoney = rand.randint(0, 20)
             print(f"You found ${randMoney}!")
+            money += randMoney
         elif (event < 25 and event > 1):
             enemyBattle()
         elif (event == 0):
